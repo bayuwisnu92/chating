@@ -1,6 +1,4 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+const io = require('socket.io')();
 
 // Event listener untuk koneksi socket
 io.on('connection', function(socket) {
