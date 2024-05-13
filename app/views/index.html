@@ -37,33 +37,38 @@
 </head>
 <body>
     <div id="homepage">
-        <h1>Selamat Datang di Chatroom</h1>
-        <input type="text" id="user_name" placeholder="Nama Kamu"><button id="masuk">Masuk</button>
+        <h1>selamat datang di chatroom</h1>
+        <input type="text" id="user_name" placeholder="nama kamu"><button id="masuk">masuk</button>
     </div>
-    <div id="chatroom" class="hidden">
-        <ul id="message"></ul>
-        <form action="">
-            <input type="text" id="text_box"> <button>Kirim</button>
-        </form>
-    </div>
+<div id="chatroom" class="hidden">
+<ul id="message"></ul>
 
+<form action="">
+    
+    <input type="text" id="text_box"> <button>kirim</button>
+
+</form>
+</div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.slim.min.js"></script>
+
     <script>
-        var socket = io();
+        var socket =io();
         var username ='';
         $('form').submit(function(){
             username = $('#user_name').val();
-            socket.emit('newMessage', $('#text_box').val());
+            socket.emit('newMessage',$('#text_box').val());
             $('#text_box').val('');
             return false;
         });
-        socket.on('newMessage', function(msg){
-            $('#message').append($('<li>').text(username + ' ' + msg + ' ' + Date()));
+        socket.on('newMessage',function(msg){
+            $('#message').append($('<li>').text(username + ' '  + msg + ' ' + Date()));
+
         });
         $('#masuk').click(function(){
             $('#chatroom').removeClass('hidden');
             $('#homepage').addClass('hidden');
+
         });
     </script>
 </body>
