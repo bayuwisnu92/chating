@@ -1,0 +1,35 @@
+form {
+    position: absolute;
+    bottom: 0%;
+    width: 100%;
+    background: grey;
+    padding: 20px;
+}
+
+#user_name {
+    float: left;
+    width: 30%;
+    height: 30px;
+    border: none;
+    margin-left: 10px;
+    background-color: black;
+    font-weight: bold;
+    color: white;
+}
+
+#text_box {
+    float: left;
+    width: 40%;
+    height: 30px;
+    border: none;
+}
+
+button {
+    float: left;
+    width: 20%;
+    height: 33px;
+}
+
+.hidden {
+    display: none;
+}

@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "hajimaru",
+    "database": "chat_time",
+    "host": "localhost",
+    "dialect": "postgres" 
+  },
+  "test": {
+    "username": "postgres",
+    "password": "hajimaru",
+    "database": "chat_time",
+    "host": "localhost",
+    "dialect": "postgres" 
+  },
+  "production": {
+    "username": "postgres",
+    "password": "hajimaru",
+    "database": "chat_time",
+    "host": "localhost",
+    "dialect": "postgres" 
+  }
+}
