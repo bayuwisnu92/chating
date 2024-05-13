@@ -1,26 +1,16 @@
-const { connected } = require('process');
+const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
+const chatRoutes = require('./app/routes/chat');
 
-var app = require('express')();
-var http =require('http').Server(app);
-var io =require('socket.io')(http);
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
 
-app.get('/',function(req,res){
-    res.sendFile(__dirname + '/index.html');
-});
+// Gunakan middleware untuk menangani rute chat
+app.use('/', chatRoutes);
 
-io.on('connection',function(socket){
-    socket.broadcast.emit('newMessage','seseorang sedang konek')
-    socket.on('newMessage',function(msg){
-        io.emit('newMessage',msg);
-        console.log('chat baru'+ msg);
-    });
-    socket.on('disconnect',function(msg){
-        
-        socket.broadcast.emit('newMessage','seseorang sedang diskonek')
-    });
-
-
-});
-http.listen(3000,function(){
-    console.log('beungeut sia jiga tutup termos')
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
