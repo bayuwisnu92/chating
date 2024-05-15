@@ -6,7 +6,7 @@ const chatRoutes = require('./app/routes/chatRoutes');
 const userRoutes = require('./app/routes/userRoutes');
 
 const chatController = require('./app/controllers/chatController');
-
+const cookieSession = require("cookie-session");
 
 const app = express();
 app.use(express.json());
@@ -15,7 +15,14 @@ app.use(bodyParser.json());
 
 // Parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(
+    cookieSession({
+      name: "bezkoder-session",
+      keys: ["COOKIE_SECRET"], // should use as secret environment variable
+      httpOnly: true,
+    })
+  );
+  
 const server = http.createServer(app);
 const io = socketIO(server);
 

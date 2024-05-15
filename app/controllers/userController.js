@@ -1,6 +1,8 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const path = require('path'); 
+const jwt = require("jsonwebtoken");
+const config = require("../config/auth.config");
 
 exports.registerUser = async (req, res) => {
   try {
@@ -48,8 +50,16 @@ exports.loginUser = async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Incorrect password' });
     }
+    const token = jwt.sign({ id: user.id },
+      config.secret,
+      {
+       algorithm: 'HS256',
+       allowInsecureKeySizes: true,
+       expiresIn: 86400, // 24 hours
+      });
 
-    res.status(200).json({ message: 'Login successful' });
+    req.session.token = token;
+    res.status(201).redirect('/chat');
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
