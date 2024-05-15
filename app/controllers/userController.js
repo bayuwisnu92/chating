@@ -52,6 +52,5 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.getLoginPage = (req, res) => {
-    res.render('login.html', { root: path.join(__dirname, '../views') });
-    console.log(__dirname)
+  res.sendFile('login.html', { root: path.join(__dirname, '../views') });
 };
