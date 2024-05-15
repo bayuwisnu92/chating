@@ -21,7 +21,7 @@ exports.registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = await User.create({
+    await User.create({
       username,
       email,
       passwordHash: hashedPassword,
@@ -48,8 +48,10 @@ exports.loginUser = async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, passwordHashAsString);
 
     if (!passwordMatch) {
-      return res.status(401).json({ message: 'Incorrect password' });
+      req.flash('error', 'Password yang dimasukkan salah');
+      return res.status(403).redirect('/user/login');
     }
+    
     const token = jwt.sign({ id: user.id },
       config.secret,
       {

@@ -5,11 +5,9 @@ const config = require("../config/auth.config.js");
 
 verifyToken = (req, res, next) => {
   let token = req.session.token;
-
+  req.flash('error', 'Anda harus login untuk mengakses halaman ini');
   if (!token) {
-    return res.status(403).send({
-      message: "No token provided!",
-    });
+    return res.status(403).redirect('/user/login');
   }
 
   jwt.verify(token,

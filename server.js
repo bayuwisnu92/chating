@@ -7,7 +7,7 @@ const userRoutes = require('./app/routes/userRoutes');
 
 const chatController = require('./app/controllers/chatController');
 const cookieSession = require("cookie-session");
-
+const flash = require('connect-flash');
 const app = express();
 app.use(express.json());
 // Parse JSON bodies
@@ -22,7 +22,13 @@ app.use(
       httpOnly: true,
     })
   );
-  
+app.use(flash());
+
+  // Penggunaan middleware flash untuk menyediakan pesan flash ke template
+  app.use((req, res, next) => {
+    res.locals.messages = req.flash();
+    next();
+  });
 const server = http.createServer(app);
 const io = socketIO(server);
 
