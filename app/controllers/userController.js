@@ -4,7 +4,11 @@ const path = require('path');
 
 exports.registerUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, confirm_password } = req.body;
+    
+    if (password !== confirm_password) {
+      return res.status(400).json({ message: 'Passwords do not match' });
+    }
     const existingUser = await User.findOne({ where: { email } });
 
     if (existingUser) {
@@ -18,15 +22,17 @@ exports.registerUser = async (req, res) => {
     const newUser = await User.create({
       username,
       email,
-      passwordHash: hashedPassword
+      passwordHash: hashedPassword,
+      passwordSalt: salt 
     });
 
-    res.status(201).json(newUser);
+    res.status(201).redirect('/user/login');
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 exports.loginUser = async (req, res) => {
   try {
@@ -36,8 +42,8 @@ exports.loginUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+    const passwordHashAsString = String(user.passwordHash);
+    const passwordMatch = await bcrypt.compare(password, passwordHashAsString);
 
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Incorrect password' });
@@ -53,4 +59,8 @@ exports.loginUser = async (req, res) => {
 
 exports.getLoginPage = (req, res) => {
   res.sendFile('login.html', { root: path.join(__dirname, '../views') });
+};
+
+exports.getRegisterPage = (req, res) => {
+  res.sendFile('register.html', { root: path.join(__dirname, '../views') });
 };

@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const http = require('http');
 const socketIO = require('socket.io');
 const chatRoutes = require('./app/routes/chatRoutes');
@@ -8,6 +9,13 @@ const chatController = require('./app/controllers/chatController');
 
 
 const app = express();
+app.use(express.json());
+// Parse JSON bodies
+app.use(bodyParser.json());
+
+// Parse URL-encoded bodies
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const server = http.createServer(app);
 const io = socketIO(server);
 
